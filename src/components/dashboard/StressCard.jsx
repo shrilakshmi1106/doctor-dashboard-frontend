@@ -40,10 +40,11 @@ export default function StressCard() {
             <Typography 
               variant="h4" 
               sx={{ 
-                fontSize: '32px',
-                fontWeight: 700,
+                fontSize: '28px',
+                fontWeight: 400,
                 color: '#1e293b',
-                lineHeight: 1
+                lineHeight: 1,
+                mt: 2
               }}
             >
               {currentPatients}/{totalPatients}
@@ -71,17 +72,18 @@ export default function StressCard() {
                 </svg>
               }
               label={`${trendPercentage}%`}
-              size="small"
+              size="medium"
               sx={{
                 backgroundColor: isPositiveTrend ? '#dcfce7' : '#fef2f2',
                 color: isPositiveTrend ? '#16a34a' : '#dc2626',
-                fontSize: '12px',
+                fontSize: '14px',
                 fontWeight: 600,
-                height: '24px',
-                width: 'fit-content',
+                height: '32px',
+                minWidth: '60px',
+                borderRadius: '8px',
                 '& .MuiChip-icon': {
                   color: 'inherit',
-                  fontSize: '12px'
+                  fontSize: '14px'
                 }
               }}
             />
@@ -96,9 +98,9 @@ export default function StressCard() {
             strokeWidth={8}
           />
           <Typography 
-            variant="caption" 
+            variant="body2" 
             sx={{ 
-              fontSize: '12px',
+              fontSize: '14px',
               color: '#94a3b8',
               fontWeight: 400,
               mt: 1
