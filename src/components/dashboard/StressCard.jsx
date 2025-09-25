@@ -85,26 +85,27 @@ export default function StressCard() {
                 }
               }}
             />
-            <Typography 
-              variant="caption" 
-              sx={{ 
-                fontSize: '12px',
-                color: '#94a3b8',
-                fontWeight: 400
-              }}
-            >
-              From last week
-            </Typography>
           </Box>
         </Box>
         
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', height: '100%' }}>
           <CircularProgress 
             percentage={stressPercentage} 
             color="#ef4444"
             size={80}
             strokeWidth={8}
           />
+          <Typography 
+            variant="caption" 
+            sx={{ 
+              fontSize: '12px',
+              color: '#94a3b8',
+              fontWeight: 400,
+              mt: 1
+            }}
+          >
+            From last week
+          </Typography>
         </Box>
       </Box>
     </Paper>
