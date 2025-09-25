@@ -96,7 +96,7 @@ export default function StressCard() {
             percentage={stressPercentage} 
             color="#ef4444"
             size={100}
-            strokeWidth={10}
+            strokeWidth={6}
           />
           <Typography 
             variant="body2" 
