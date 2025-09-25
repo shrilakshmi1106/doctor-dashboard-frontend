@@ -21,34 +21,36 @@ export default function StressCard() {
         flexDirection: 'column'
       }}
     >
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 2 }}>
-        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
-          <Typography 
-            variant="body2" 
-            sx={{ 
-              fontSize: '14px',
-              fontWeight: 500,
-              color: '#64748b',
-              lineHeight: 1.2
-            }}
-          >
-            Patients Showing Stress
-          </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 2, height: '100%' }}>
+        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
+          <Box>
+            <Typography 
+              variant="body2" 
+              sx={{ 
+                fontSize: '14px',
+                fontWeight: 500,
+                color: '#64748b',
+                lineHeight: 1.2,
+                mb: 1
+              }}
+            >
+              Patients Showing Stress
+            </Typography>
+            
+            <Typography 
+              variant="h4" 
+              sx={{ 
+                fontSize: '32px',
+                fontWeight: 700,
+                color: '#1e293b',
+                lineHeight: 1
+              }}
+            >
+              {currentPatients}/{totalPatients}
+            </Typography>
+          </Box>
           
-          <Typography 
-            variant="h4" 
-            sx={{ 
-              fontSize: '32px',
-              fontWeight: 700,
-              color: '#1e293b',
-              margin: '8px 0',
-              lineHeight: 1
-            }}
-          >
-            {currentPatients}/{totalPatients}
-          </Typography>
-          
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, mt: 1.5 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, alignItems: 'flex-start' }}>
             <Chip
               icon={
                 <svg width="12" height="8" viewBox="0 0 12 8" fill="none" style={{ marginLeft: '4px' }}>
@@ -83,26 +85,26 @@ export default function StressCard() {
                 }
               }}
             />
+            <Typography 
+              variant="caption" 
+              sx={{ 
+                fontSize: '12px',
+                color: '#94a3b8',
+                fontWeight: 400
+              }}
+            >
+              From last week
+            </Typography>
           </Box>
         </Box>
         
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <CircularProgress 
             percentage={stressPercentage} 
             color="#ef4444"
             size={80}
             strokeWidth={8}
           />
-          <Typography 
-            variant="caption" 
-            sx={{ 
-              fontSize: '12px',
-              color: '#94a3b8',
-              fontWeight: 400
-            }}
-          >
-            From last week
-          </Typography>
         </Box>
       </Box>
     </Paper>
