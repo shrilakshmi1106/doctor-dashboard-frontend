@@ -27,11 +27,11 @@ export default function StressCard() {
             <Typography 
               variant="body2" 
               sx={{ 
-                fontSize: '14px',
+                fontSize: '16px',
                 fontWeight: 500,
                 color: '#64748b',
                 lineHeight: 1.2,
-                mb: 1
+                mb: 2
               }}
             >
               Patients Showing Stress
@@ -44,7 +44,8 @@ export default function StressCard() {
                 fontWeight: 400,
                 color: '#1e293b',
                 lineHeight: 1,
-                mt: 2
+                mt: 3,
+                mb: 2
               }}
             >
               {currentPatients}/{totalPatients}
@@ -94,8 +95,8 @@ export default function StressCard() {
           <CircularProgress 
             percentage={stressPercentage} 
             color="#ef4444"
-            size={80}
-            strokeWidth={8}
+            size={100}
+            strokeWidth={10}
           />
           <Typography 
             variant="body2" 
