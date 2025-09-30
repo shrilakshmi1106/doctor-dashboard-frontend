@@ -199,6 +199,7 @@ function AppointmentCard({ appointment }) {
             sx={{
                 mb: 2,
                 borderRadius: "8px",
+                minHeight: 180,
                 boxShadow: "0px 0.5px 4px 0px rgba(111, 111, 111, 0.1)",
                 border: "1px solid #f0f0f0",
                 "&:hover": {
@@ -289,27 +290,27 @@ function AppointmentCard({ appointment }) {
                     </Box>
                     
                     {/* View Profile Button */}
-                    <Button
+                   <Button
                         variant="contained"
-                        fullWidth
                         sx={{
+                            width: "50%",   
+                            alignSelf: "flex-start", 
                             borderRadius: "6px",
                             textTransform: "none",
                             py: 1.2,
                             fontWeight: 500,
                             fontSize: "0.9rem",
-                            boxShadow: 'none',
-                            background: CUSTOM_BLUE, 
-                            color: '#fff',
+                            boxShadow: "none",
+                            background: CUSTOM_BLUE,
+                            color: "#fff",
                             "&:hover": {
                                 background: HOVER_BLUE,
                             },
                         }}
-                    >
+                        >
                         View Profile
-                    </Button>
+                        </Button>
                 </Box>
-                
             </CardContent>
         </Card>
     );
@@ -407,10 +408,10 @@ export default function AppointmentsPage() {
                 <Box sx={{ display: 'flex', gap: 3 }}>
                     
                     {/* Filters Sidebar */}
-                    <Box sx={{ width: 280, flexShrink: 0 }}>
+                    <Box sx={{ width: 340, flexShrink: 0 }}>
                         <Paper
                             sx={{
-                                p: 3,
+                                p: 4,
                                 borderRadius: '16px',
                                 boxShadow: '0px 0.5px 9px 0px rgba(111, 111, 111, 0.1)',
                                 bgcolor: 'white',
