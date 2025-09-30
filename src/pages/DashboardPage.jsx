@@ -1,6 +1,7 @@
 // src/pages/DashboardPage.jsx
 import React from 'react';
 import { Box, Typography, Paper, Link as MuiLink } from '@mui/material';
+import { Link } from 'react-router-dom';
 import Header from '../components/layout/Header'; 
 import Footer from '../components/layout/Footer';
 import UpcomingAppointments from '../components/UpcomingAppointments';
@@ -68,7 +69,12 @@ export default function DashboardPage() {
                 <Typography variant="h6" sx={{ fontWeight: '400' }}>
                   Upcoming Appointments
                 </Typography>
-                <MuiLink href="#" underline="none" sx={{ fontWeight: '400', color: 'primary.main', fontSize: '0.875rem' }}>
+                <MuiLink 
+                  component={Link} 
+                  to="/appointments" 
+                  underline="none" 
+                  sx={{ fontWeight: '400', color: 'primary.main', fontSize: '0.875rem' }}
+                >
                   See all
                 </MuiLink>
               </Box>
