@@ -1,110 +1,183 @@
-// src/components/dashboard/StressCard.jsx
-import React from 'react';
-import { Box, Typography, Paper, Chip } from '@mui/material';
-import CircularProgress from './CircularProgress';
+import React, { useState, useEffect } from "react";
 
-export default function StressCard() {
-  const currentPatients = 20;
-  const totalPatients = 100;
-  const trendPercentage = 2.8;
-  const isPositiveTrend = true;
-  const stressPercentage = Math.round((currentPatients / totalPatients) * 100);
+export default function StressPatientsCard() {
+  const [metricsData, setMetricsData] = useState({
+    current: 0,
+    total: 100,
+    growthPercentage: 0,
+    isLoading: true,
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/patients/stress");
+        const data = await response.json();
+
+        setMetricsData({
+          current: data.current || 20,
+          total: data.total || 100,
+          growthPercentage: data.growthPercentage || 2.8,
+          isLoading: false,
+        });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setMetricsData({
+          current: 20,
+          total: 100,
+          growthPercentage: 2.8,
+          isLoading: false,
+        });
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const radius = 40;
+  const circumference = 2 * Math.PI * radius;
+  const percentage = metricsData.total > 0 ? Math.round((metricsData.current / metricsData.total) * 100) : 0;
+  const strokeDashoffset = circumference - (percentage / 100) * circumference;
+
+  const cardStyles = {
+    background: "linear-gradient(135deg, #ffffff 60%, rgba(219, 234, 254, 0.5) 100%)",
+    borderRadius: "16px",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+    padding: "24px",
+    fontFamily: "Albert Sans, sans-serif",
+    height: "200px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+  };
+
+  if (metricsData.isLoading) {
+    return (
+      <div style={{ width: "100%", fontFamily: "Albert Sans, sans-serif" }}>
+        <div style={cardStyles}>Loading...</div>
+      </div>
+    );
+  }
 
   return (
-    <Paper 
-      sx={{ 
-        p: 3, 
-        borderRadius: '16px',
-        height: '100%',
-        boxShadow: '0px 0.5px 9px 0px rgba(111, 111, 111, 0.3)',
-        display: 'flex',
-        flexDirection: 'column'
-      }}
-    >
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 2 }}>
-        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
-          <Typography 
-            variant="body2" 
-            sx={{ 
-              fontSize: '14px',
-              fontWeight: 500,
-              color: '#64748b',
-              lineHeight: 1.2
-            }}
-          >
-            Patients Showing Stress
-          </Typography>
-          
-          <Typography 
-            variant="h4" 
-            sx={{ 
-              fontSize: '32px',
-              fontWeight: 700,
-              color: '#1e293b',
-              margin: '8px 0',
-              lineHeight: 1
-            }}
-          >
-            {currentPatients}/{totalPatients}
-          </Typography>
-          
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, mt: 1.5 }}>
-            <Chip
-              icon={
-                <svg width="12" height="8" viewBox="0 0 12 8" fill="none" style={{ marginLeft: '4px' }}>
-                  <path 
-                    d="M1 6L3.5 3.5L6 5L11 1" 
-                    stroke="currentColor" 
-                    strokeWidth="1.5" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round"
-                  />
-                  <path 
-                    d="M8 1H11V4" 
-                    stroke="currentColor" 
-                    strokeWidth="1.5" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              }
-              label={`${trendPercentage}%`}
-              size="small"
-              sx={{
-                backgroundColor: isPositiveTrend ? '#dcfce7' : '#fef2f2',
-                color: isPositiveTrend ? '#16a34a' : '#dc2626',
-                fontSize: '12px',
-                fontWeight: 600,
-                height: '24px',
-                width: 'fit-content',
-                '& .MuiChip-icon': {
-                  color: 'inherit',
-                  fontSize: '12px'
-                }
-              }}
-            />
-            <Typography 
-              variant="caption" 
-              sx={{ 
-                fontSize: '12px',
-                color: '#94a3b8',
-                fontWeight: 400
+    <div style={{ width: "100%", fontFamily: "Albert Sans, sans-serif" }}>
+      <div style={cardStyles}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+          <div>
+            <h3
+              style={{
+                color: "#374151",
+                fontSize: "18px",
+                fontWeight: "400",
+                margin: "0 0 12px 0",
               }}
             >
-              From last week
-            </Typography>
-          </Box>
-        </Box>
-        
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <CircularProgress 
-            percentage={stressPercentage} 
-            color="#ef4444"
-            size={80}
-            strokeWidth={8}
-          />
-        </Box>
-      </Box>
-    </Paper>
+              Patients Showing Stress
+            </h3>
+            <div
+              style={{
+                fontSize: "20px",
+                fontWeight: "400",
+                color: "#1f2937",
+                lineHeight: "1",
+              }}
+            >
+              {metricsData.current}/{metricsData.total}
+            </div>
+          </div>
+
+          <div style={{ position: "relative", width: "90px", height: "90px", flexShrink: 0 }}>
+            <svg
+              width="90"
+              height="90"
+              style={{ transform: "rotate(-90deg)" }}
+              viewBox="0 0 100 100"
+            >
+              <circle
+                cx="50"
+                cy="50"
+                r={radius}
+                stroke="#e5e7eb"
+                strokeWidth="8"
+                fill="transparent"
+              />
+              <circle
+                cx="50"
+                cy="50"
+                r={radius}
+                stroke="#ef4444"
+                strokeWidth="8"
+                fill="transparent"
+                strokeDasharray={circumference}
+                strokeDashoffset={strokeDashoffset}
+                strokeLinecap="round"
+                style={{ transition: "all 0.5s ease-out" }}
+              />
+            </svg>
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "20px",
+                fontWeight: "600",
+                color: "#ef4444",
+              }}
+            >
+              {percentage}%
+            </div>
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "#dcfce7",
+              color: "#16a34a",
+              padding: "6px 10px",
+              borderRadius: "6px",
+              fontSize: "14px",
+              fontWeight: "500",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+            }}
+          >
+            <svg
+              width="14"
+              height="14"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+              />
+            </svg>
+            {metricsData.growthPercentage}%
+          </div>
+          <span
+            style={{
+              fontSize: "14px",
+              fontWeight: "400",
+              color: "#6b7280",
+            }}
+          >
+            From last week
+          </span>
+        </div>
+      </div>
+    </div>
   );
 }
