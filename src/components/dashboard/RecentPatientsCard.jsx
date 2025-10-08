@@ -1,24 +1,51 @@
 // src/components/dashboard/RecentPatientsCard.jsx
-import React from 'react';
-import { Paper, Typography, Box } from '@mui/material';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Paper } from '@mui/material';
+import RecentPatients from "./RecentPatients";
+import ProfileView from "./ProfileView";
+import { recentPatientsData } from "../../data";
 
 export default function RecentPatientsCard() {
+  const navigate = useNavigate();
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [showProfile, setShowProfile] = useState(false);
+
+  const handleSeeAll = () => {
+    navigate('/patients', { state: { view: 'all' } });
+  };
+
+  const handleViewProfile = (patient) => {
+    setSelectedPatient(patient);
+    setShowProfile(true);
+  };
+
+  const handleBackFromProfile = () => {
+    setSelectedPatient(null);
+    setShowProfile(false);
+  };
+
+  if (showProfile && selectedPatient) {
+    return <ProfileView patient={selectedPatient} onBack={handleBackFromProfile} />;
+  }
+
   return (
     <Paper 
       sx={{ 
-        p: 2, 
-        borderRadius: '16px', // Rounded border
-        height: '100%', 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center',
-        // ADDED: Custom shadow
-        boxShadow: '0px 0.5px 9px 0px rgba(111, 111, 111, 0.3)' 
+        p: '16px', 
+        borderRadius: '16px', 
+        bgcolor: 'white', 
+        height: '100%',
+        boxShadow: '0px 0.5px 9px 0px rgba(111, 111, 111, 0.3)',
+        display: 'flex',
+        flexDirection: 'column'
       }}
     >
-      <Typography variant="h6" color="text.secondary">
-        Recent Patients Card
-      </Typography>
+      <RecentPatients
+        patients={recentPatientsData}
+        onSeeAll={handleSeeAll}
+        onViewProfile={handleViewProfile}
+      />
     </Paper>
   );
 }
