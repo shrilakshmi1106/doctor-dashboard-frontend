@@ -27,7 +27,7 @@ export default function StressCard() {
             variant="body2" 
             sx={{ 
               fontSize: '14px',
-              fontWeight: 500,
+              fontWeight: 400,
               color: '#64748b',
               lineHeight: 1.2
             }}
@@ -39,7 +39,7 @@ export default function StressCard() {
             variant="h4" 
             sx={{ 
               fontSize: '32px',
-              fontWeight: 700,
+              fontWeight: 400,
               color: '#1e293b',
               margin: '8px 0',
               lineHeight: 1
