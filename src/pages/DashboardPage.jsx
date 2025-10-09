@@ -1,6 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Box, Typography, Paper, Link as MuiLink } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Box,
+  Typography,
+  Paper,
+  Link as MuiLink,
+  IconButton,
+} from "@mui/material";
 import { Link } from "react-router-dom";
+import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import UpcomingAppointments from "../components/UpcomingAppointments";
 import ActivePatientsCard from "../components/dashboard/ActivePatientsCard";
 import StressCard from "../components/dashboard/StressCard";
@@ -10,7 +18,7 @@ import PatientDistributionCard from "../components/dashboard/PatientDistribution
 import MessagesCard from "../components/dashboard/MessagesCard";
 
 export default function DashboardPage() {
-  const [userProfile, setUserProfile] = useState({
+  const [userProfile] = useState({
     name: "Dr. Rohit",
     avatar: "https://i.pravatar.cc/40?img=12",
   });
@@ -78,13 +86,14 @@ export default function DashboardPage() {
         </Typography>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <Typography
-            sx={{ color: "#6b7280", cursor: "pointer", fontSize: "20px" }}
-            onClick={handleBellClick}
-          >
-            🔔
-          </Typography>
-          <Typography sx={{ color: "#6b7280", cursor: "pointer" }}>🔍</Typography>
+          <IconButton onClick={handleBellClick} sx={{ color: "#6b7280" }}>
+            <NotificationsNoneOutlinedIcon />
+          </IconButton>
+
+          <IconButton sx={{ color: "#6b7280" }}>
+            <SearchOutlinedIcon />
+          </IconButton>
+
           <Box
             component="img"
             src={userProfile.avatar}
@@ -151,7 +160,7 @@ export default function DashboardPage() {
           gap: 3,
           px: 3,
           pb: 5,
-          alignItems: "stretch", 
+          alignItems: "stretch",
           gridTemplateColumns: {
             xs: "1fr",
             md: "repeat(12, 1fr)",
