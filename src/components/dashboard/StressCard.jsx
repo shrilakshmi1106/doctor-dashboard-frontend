@@ -23,17 +23,14 @@ export default function StressCard() {
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 2 }}>
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
-          <Typography 
-            variant="body2" 
-            sx={{ 
-              fontSize: '14px',
-              fontWeight: 400,
-              color: '#64748b',
-              lineHeight: 1.2
-            }}
-          >
-            Patients Showing Stress
-          </Typography>
+          <Typography
+  variant="h6"
+  color="#333333"
+  gutterBottom
+  sx={{ fontFamily: 'Albert Sans, sans-serif', fontWeight: 400 }}
+>
+  Patients showing stress
+</Typography>
           
           <Typography 
             variant="h4" 

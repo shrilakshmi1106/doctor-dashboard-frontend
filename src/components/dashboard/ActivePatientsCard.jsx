@@ -19,9 +19,14 @@ export default function ActivePatientsCard() {
         boxShadow: '0px 0.5px 9px 0px rgba(111, 111, 111, 0.3)' 
       }}
     >
-      <Typography variant="body1" color="text.secondary">
-        Active Patients
-      </Typography>
+     <Typography
+  variant="h6"
+  color="#333333"
+  gutterBottom
+  sx={{ fontFamily: 'Albert Sans, sans-serif', fontWeight: 400 }}
+>
+  Active Patients
+</Typography>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', my: 2 }}>
         <Typography variant="h4" sx={{ fontWeight: '400' }}>
