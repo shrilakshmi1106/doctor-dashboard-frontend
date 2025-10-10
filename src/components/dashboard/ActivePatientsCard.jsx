@@ -1,95 +1,133 @@
-// src/components/dashboard/ActivePatientsCard.jsx
-import React from 'react';
-import { Box, Typography, Paper } from '@mui/material';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import CircularProgress from '@mui/material/CircularProgress';
+import React, { useState, useEffect } from "react";
+import { Paper, Typography } from "@mui/material";
 
 export default function ActivePatientsCard() {
-  const percentage = 70;
+  const [metricsData, setMetricsData] = useState({
+    current: 0,
+    total: 100,
+    growthPercentage: 0,
+    isLoading: true,
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/patients/active");
+        const data = await response.json();
+
+        setMetricsData({
+          current: data.current || 70,
+          total: data.total || 100,
+          growthPercentage: data.growthPercentage || 6.7,
+          isLoading: false,
+        });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setMetricsData({
+          current: 70,
+          total: 100,
+          growthPercentage: 6.7,
+          isLoading: false,
+        });
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const radius = 40;
+  const circumference = 2 * Math.PI * radius;
+  const percentage =
+    metricsData.total > 0
+      ? Math.round((metricsData.current / metricsData.total) * 100)
+      : 0;
+  const strokeDashoffset = circumference - (percentage / 100) * circumference;
+
+  if (metricsData.isLoading) {
+    return <Paper sx={{ p: 2 }}>Loading...</Paper>;
+  }
+
   return (
-    <Paper 
-      sx={{ 
-        p: 2, 
-        borderRadius: '16px', // Rounded border
-        height: '100%', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        justifyContent: 'space-between',
-        // ADDED: Custom shadow
-        boxShadow: '0px 0.5px 9px 0px rgba(111, 111, 111, 0.3)' 
+    <Paper
+      sx={{
+        p: 2,
+        borderRadius: "16px",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        boxShadow: "0px 0.5px 9px 0px rgba(111, 111, 111, 0.3)",
       }}
     >
-     <Typography
-  variant="h6"
-  color="#333333"
-  gutterBottom
-  sx={{ fontFamily: 'Albert Sans, sans-serif', fontWeight: 400 }}
->
-  Active Patients
-</Typography>
+      <Typography
+        variant="h6"
+        color="#333333"
+        gutterBottom
+        sx={{ fontFamily: "Albert Sans, sans-serif", fontWeight: 400 }}
+      >
+        Active Patients
+      </Typography>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', my: 2 }}>
-        <Typography variant="h4" sx={{ fontWeight: '400' }}>
-          70/100
-        </Typography>
-
-        <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-          <CircularProgress
-            variant="determinate"
-            value={100}
-            size={80}
-            thickness={4}
-            sx={{ color: '#e0e0e0' }}
+      <div style={{ position: "relative", width: "90px", height: "90px" }}>
+        <svg width="90" height="90" style={{ transform: "rotate(-90deg)" }} viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r={radius} stroke="#e5e7eb" strokeWidth="8" fill="transparent" />
+          <circle
+            cx="50"
+            cy="50"
+            r={radius}
+            stroke="#3b82f6"
+            strokeWidth="8"
+            fill="transparent"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            strokeLinecap="round"
+            style={{ transition: "all 0.5s ease-out" }}
           />
-          <CircularProgress
-            variant="determinate"
-            value={percentage}
-            size={80}
-            thickness={4}
-            sx={{
-              color: '#1976d2',
-              position: 'absolute',
-              left: 0,
-            }}
-          />
-          <Box
-            sx={{
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: 0,
-              position: 'absolute',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Typography variant="h6" component="div" color="primary.main" sx={{ fontWeight: '400' }}>
-              {`${percentage}%`}
-            </Typography>
-          </Box>
-        </Box>
-      </Box>
-
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Box
-          sx={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            bgcolor: '#e8f5e9',
-            p: '4px 8px',
-            borderRadius: '8px',
+        </svg>
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "20px",
+            fontWeight: "600",
+            color: "#3b82f6",
           }}
         >
-          <TrendingUpIcon sx={{ color: '#4caf50', mr: 0.5 }} />
-          <Typography variant="body2" sx={{ color: '#4caf50', fontWeight: '400' }}>
-            6.7%
-          </Typography>
-        </Box>
-        <Typography variant="body2" color="text.secondary">
+          {percentage}%
+        </div>
+      </div>
+
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div
+          style={{
+            backgroundColor: "#dcfce7",
+            color: "#16a34a",
+            padding: "6px 10px",
+            borderRadius: "6px",
+            fontSize: "14px",
+            fontWeight: "500",
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+          }}
+        >
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+            />
+          </svg>
+          {metricsData.growthPercentage}%
+        </div>
+        <span style={{ fontSize: "14px", fontWeight: "400", color: "#6b7280" }}>
           From last week
-        </Typography>
-      </Box>
+        </span>
+      </div>
     </Paper>
   );
 }

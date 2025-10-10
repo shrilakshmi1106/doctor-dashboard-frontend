@@ -1,48 +1,85 @@
-// src/components/dashboard/StressCard.jsx
-import React from 'react';
-import { Box, Typography, Paper } from '@mui/material';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp'; // Using the same icon
-import CircularProgress from '@mui/material/CircularProgress'; // Using the standard MUI component
+import React, { useState, useEffect } from 'react';
+import { Box, Typography, Paper, CircularProgress } from '@mui/material';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 
 export default function StressCard() {
-  const currentPatients = 20;
-  const totalPatients = 100;
-  const trendPercentage = 2.8;
-  const stressPercentage = Math.round((currentPatients / totalPatients) * 100);
+  const [metricsData, setMetricsData] = useState({
+    current: 0,
+    total: 100,
+    growthPercentage: 0,
+    isLoading: true,
+  });
 
-  // NOTE: For a stress card, a positive trend might be bad, so we'll use red.
+  // Fetch data dynamically
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/patients/stress');
+        const data = await response.json();
+
+        setMetricsData({
+          current: data.current || 20,
+          total: data.total || 100,
+          growthPercentage: data.growthPercentage || 2.8,
+          isLoading: false,
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setMetricsData({
+          current: 20,
+          total: 100,
+          growthPercentage: 2.8,
+          isLoading: false,
+        });
+      }
+    };
+    fetchData();
+  }, []);
+
+  const stressPercentage =
+    metricsData.total > 0
+      ? Math.round((metricsData.current / metricsData.total) * 100)
+      : 0;
+
   const trendColor = '#dc2626'; // Red for stress increase
   const trendBgColor = '#fef2f2'; // Light red background
 
+  if (metricsData.isLoading) {
+    return (
+      <Paper sx={{ p: 2, borderRadius: '16px', height: '200px' }}>
+        Loading...
+      </Paper>
+    );
+  }
+
   return (
-    <Paper 
-      sx={{ 
-        p: 2, 
+    <Paper
+      sx={{
+        p: 2,
         borderRadius: '16px',
-        height: '100%', 
-        display: 'flex', 
-        flexDirection: 'column', 
+        height: '200px',
+        display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'space-between',
-        boxShadow: '0px 0.5px 9px 0px rgba(111, 111, 111, 0.3)' 
+        boxShadow: '0px 0.5px 9px 0px rgba(111, 111, 111, 0.3)',
       }}
     >
-      {/* --- TOP SECTION: Title --- */}
+      {/* Top: Title */}
       <Typography
         variant="h6"
         color="#333333"
         gutterBottom
         sx={{ fontFamily: 'Albert Sans, sans-serif', fontWeight: 400 }}
       >
-        Patients showing stress
+        Patients Showing Stress
       </Typography>
 
-      {/* --- MIDDLE SECTION: Count and Progress Circle --- */}
+      {/* Middle: Count + Circular Progress */}
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', my: 2 }}>
-        <Typography variant="h4" sx={{ fontWeight: '400' }}>
-          {currentPatients}/{totalPatients}
+        <Typography variant="h4" sx={{ fontWeight: 400 }}>
+          {metricsData.current}/{metricsData.total}
         </Typography>
 
-        {/* This is the circular progress structure from ActivePatientsCard */}
         <Box sx={{ position: 'relative', display: 'inline-flex' }}>
           <CircularProgress
             variant="determinate"
@@ -56,11 +93,7 @@ export default function StressCard() {
             value={stressPercentage}
             size={80}
             thickness={4}
-            sx={{
-              color: '#ef4444', // Red color for stress
-              position: 'absolute',
-              left: 0,
-            }}
+            sx={{ color: '#ef4444', position: 'absolute', left: 0 }}
           />
           <Box
             sx={{
@@ -74,28 +107,19 @@ export default function StressCard() {
               justifyContent: 'center',
             }}
           >
-            <Typography variant="h6" component="div" sx={{ fontWeight: '400', color: '#ef4444' }}>
+            <Typography variant="h6" sx={{ fontWeight: 400, color: '#ef4444' }}>
               {`${stressPercentage}%`}
             </Typography>
           </Box>
         </Box>
       </Box>
 
-      {/* --- BOTTOM SECTION: Trend Info --- */}
+      {/* Bottom: Trend */}
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        {/* This is the trend display from ActivePatientsCard */}
-        <Box
-          sx={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            bgcolor: trendBgColor,
-            p: '4px 8px',
-            borderRadius: '8px',
-          }}
-        >
+        <Box sx={{ display: 'inline-flex', alignItems: 'center', bgcolor: trendBgColor, p: '4px 8px', borderRadius: '8px' }}>
           <TrendingUpIcon sx={{ color: trendColor, mr: 0.5 }} />
-          <Typography variant="body2" sx={{ color: trendColor, fontWeight: '400' }}>
-            {trendPercentage}%
+          <Typography variant="body2" sx={{ color: trendColor, fontWeight: 400 }}>
+            {metricsData.growthPercentage}%
           </Typography>
         </Box>
         <Typography variant="body2" color="text.secondary">
