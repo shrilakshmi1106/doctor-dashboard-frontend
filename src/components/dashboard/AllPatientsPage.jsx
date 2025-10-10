@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { useNavigate } from "react-router-dom"; 
 
 // 🔍 Search icon inline
 function IconSearch() {
@@ -84,7 +85,24 @@ export default function AllPatientsPage({
     <div className="page all-page">
       {/* 🔝 Topbar */}
       <header className="topbar">
-        <div className="brand">PreSchedule</div>
+        <div className="brand">
+          <span style={{ 
+            background: 'linear-gradient(135deg, #3b129cff 0%, #6019dcff 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            fontWeight: '400',
+            fontSize: '24px'
+          }}>Pre</span>
+          <span style={{ 
+            background: 'linear-gradient(135deg, #2864c4ff 0%, #138086ff 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            fontWeight: '400',
+            fontSize: '24px'
+          }}>Schedule</span>
+        </div>
         <div className="top-actions">
           <button className="icon-btn" title="Notifications">
             <img src="/icons/bell.png" alt="Notifications" className="icon-img" />
@@ -102,9 +120,9 @@ export default function AllPatientsPage({
           <div className="sidebar-inner">
             <div className="filters-header">
               <h3>Filters</h3>
-              <button className="link-btn small" onClick={onBack}>
+              {/*<button className="link-btn small" onClick={onBack}>
                 ← Back
-              </button>
+              </button>*/}
             </div>
 
             <div className="filter-group">

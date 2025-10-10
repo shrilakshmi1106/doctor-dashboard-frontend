@@ -1,3 +1,4 @@
+//RecentPatients.jsx
 import React from "react";
 
 export default function RecentPatients({ onSeeAll, onViewProfile, patients }) {

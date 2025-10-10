@@ -31,6 +31,14 @@ export const recentPatientsData = [
     avatar:
       "public/icons/RavyaGupta.png",
     status: "caution",
+  },
+  {
+    id: 5,
+    name: "Ananya Mehra",
+    condition: "OCD",
+    avatar:
+      "public/icons/AnanyaMehra.png",
+    status: "stable",
   }
 ];
 
