@@ -5,6 +5,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { Container, Box } from "@mui/material";
 
 import theme from "./theme";
 import DashboardPage from "./pages/DashboardPage";
@@ -13,9 +14,11 @@ import AppointmentsPage from "./pages/AppointmentsPage";
 import RecentPatients from "./components/dashboard/RecentPatients";
 import AllPatientsPage from "./components/dashboard/AllPatientsPage";
 import ProfileView from "./components/dashboard/ProfileView";
+import PatientDistributionCard from "./components/dashboard/PatientDistributionCard";
 
 import { recentPatientsData, allPatientsData } from "./data";
 
+// --- PatientsManager Component ---
 function PatientsManager() {
   const location = useLocation();
   const [view, setView] = useState(location.state?.view || "recent");
@@ -91,6 +94,7 @@ function PatientsManager() {
   );
 }
 
+// --- Main App Component ---
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -101,6 +105,17 @@ function App() {
             <Route path="/" element={<DashboardPage />} />
             <Route path="/appointments" element={<AppointmentsPage />} />
             <Route path="/patients" element={<PatientsManager />} />
+            {/* New Route for Patient Distribution Card */}
+            <Route
+              path="/patient-distribution"
+              element={
+                <Container sx={{ mt: 5 }}>
+                  <Box sx={{ width: 500 }}>
+                    <PatientDistributionCard />
+                  </Box>
+                </Container>
+              }
+            />
           </Routes>
         </Router>
       </LocalizationProvider>
