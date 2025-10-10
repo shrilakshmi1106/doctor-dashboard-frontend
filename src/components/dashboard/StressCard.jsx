@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Typography, Paper, CircularProgress } from '@mui/material';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import React, { useState, useEffect } from "react";
 
-export default function StressCard() {
+export default function StressPatientsCard() {
   const [metricsData, setMetricsData] = useState({
     current: 0,
     total: 100,
@@ -10,11 +8,10 @@ export default function StressCard() {
     isLoading: true,
   });
 
-  // Fetch data dynamically
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/api/patients/stress');
+        const response = await fetch("/api/patients/stress");
         const data = await response.json();
 
         setMetricsData({
@@ -24,7 +21,7 @@ export default function StressCard() {
           isLoading: false,
         });
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
         setMetricsData({
           current: 20,
           total: 100,
@@ -33,99 +30,154 @@ export default function StressCard() {
         });
       }
     };
+
     fetchData();
   }, []);
 
-  const stressPercentage =
-    metricsData.total > 0
-      ? Math.round((metricsData.current / metricsData.total) * 100)
-      : 0;
+  const radius = 40;
+  const circumference = 2 * Math.PI * radius;
+  const percentage = metricsData.total > 0 ? Math.round((metricsData.current / metricsData.total) * 100) : 0;
+  const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
-  const trendColor = '#dc2626'; // Red for stress increase
-  const trendBgColor = '#fef2f2'; // Light red background
+  const cardStyles = {
+    background: "linear-gradient(135deg, #ffffff 60%, rgba(219, 234, 254, 0.5) 100%)",
+    borderRadius: "16px",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+    padding: "24px",
+    fontFamily: "Albert Sans, sans-serif",
+    height: "200px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+  };
 
   if (metricsData.isLoading) {
     return (
-      <Paper sx={{ p: 2, borderRadius: '16px', height: '200px' }}>
-        Loading...
-      </Paper>
+      <div style={{ width: "100%", fontFamily: "Albert Sans, sans-serif" }}>
+        <div style={cardStyles}>Loading...</div>
+      </div>
     );
   }
 
   return (
-    <Paper
-      sx={{
-        p: 2,
-        borderRadius: '16px',
-        height: '200px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        boxShadow: '0px 0.5px 9px 0px rgba(111, 111, 111, 0.3)',
-      }}
-    >
-      {/* Top: Title */}
-      <Typography
-        variant="h6"
-        color="#333333"
-        gutterBottom
-        sx={{ fontFamily: 'Albert Sans, sans-serif', fontWeight: 400 }}
-      >
-        Patients Showing Stress
-      </Typography>
+    <div style={{ width: "100%", fontFamily: "Albert Sans, sans-serif" }}>
+      <div style={cardStyles}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+          <div>
+            <h3
+              style={{
+                color: "#374151",
+                fontSize: "18px",
+                fontWeight: "400",
+                margin: "0 0 12px 0",
+              }}
+            >
+              Patients Showing Stress
+            </h3>
+            <div
+              style={{
+                fontSize: "20px",
+                fontWeight: "400",
+                color: "#1f2937",
+                lineHeight: "1",
+              }}
+            >
+              {metricsData.current}/{metricsData.total}
+            </div>
+          </div>
 
-      {/* Middle: Count + Circular Progress */}
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', my: 2 }}>
-        <Typography variant="h4" sx={{ fontWeight: 400 }}>
-          {metricsData.current}/{metricsData.total}
-        </Typography>
+          <div style={{ position: "relative", width: "90px", height: "90px", flexShrink: 0 }}>
+            <svg
+              width="90"
+              height="90"
+              style={{ transform: "rotate(-90deg)" }}
+              viewBox="0 0 100 100"
+            >
+              <circle
+                cx="50"
+                cy="50"
+                r={radius}
+                stroke="#e5e7eb"
+                strokeWidth="8"
+                fill="transparent"
+              />
+              <circle
+                cx="50"
+                cy="50"
+                r={radius}
+                stroke="#ef4444"
+                strokeWidth="8"
+                fill="transparent"
+                strokeDasharray={circumference}
+                strokeDashoffset={strokeDashoffset}
+                strokeLinecap="round"
+                style={{ transition: "all 0.5s ease-out" }}
+              />
+            </svg>
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "20px",
+                fontWeight: "600",
+                color: "#ef4444",
+              }}
+            >
+              {percentage}%
+            </div>
+          </div>
+        </div>
 
-        <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-          <CircularProgress
-            variant="determinate"
-            value={100}
-            size={80}
-            thickness={4}
-            sx={{ color: '#e0e0e0' }}
-          />
-          <CircularProgress
-            variant="determinate"
-            value={stressPercentage}
-            size={80}
-            thickness={4}
-            sx={{ color: '#ef4444', position: 'absolute', left: 0 }}
-          />
-          <Box
-            sx={{
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: 0,
-              position: 'absolute',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "#dcfce7",
+              color: "#16a34a",
+              padding: "6px 10px",
+              borderRadius: "6px",
+              fontSize: "14px",
+              fontWeight: "500",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
             }}
           >
-            <Typography variant="h6" sx={{ fontWeight: 400, color: '#ef4444' }}>
-              {`${stressPercentage}%`}
-            </Typography>
-          </Box>
-        </Box>
-      </Box>
-
-      {/* Bottom: Trend */}
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Box sx={{ display: 'inline-flex', alignItems: 'center', bgcolor: trendBgColor, p: '4px 8px', borderRadius: '8px' }}>
-          <TrendingUpIcon sx={{ color: trendColor, mr: 0.5 }} />
-          <Typography variant="body2" sx={{ color: trendColor, fontWeight: 400 }}>
+            <svg
+              width="14"
+              height="14"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+              />
+            </svg>
             {metricsData.growthPercentage}%
-          </Typography>
-        </Box>
-        <Typography variant="body2" color="text.secondary">
-          From last week
-        </Typography>
-      </Box>
-    </Paper>
+          </div>
+          <span
+            style={{
+              fontSize: "14px",
+              fontWeight: "400",
+              color: "#6b7280",
+            }}
+          >
+            From last week
+          </span>
+        </div>
+      </div>
+    </div>
   );
 }
