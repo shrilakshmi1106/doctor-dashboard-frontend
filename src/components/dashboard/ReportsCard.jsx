@@ -1,59 +1,114 @@
-import React from 'react';
-import { Paper, Typography, Box, Button } from '@mui/material';
+import React, { useState, useEffect } from "react";
 
-export default function ReportsCard() {
+export default function NewReportsCard() {
+  const [metricsData, setMetricsData] = useState({
+    count: 0,
+    description: "new pending reports",
+    isLoading: true,
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/reports/pending");
+        const data = await response.json();
+
+        setMetricsData({
+          count: data.count || 5,
+          description: "new pending reports",
+          isLoading: false,
+        });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setMetricsData({
+          count: 5,
+          description: "new pending reports",
+          isLoading: false,
+        });
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const cardStyles = {
+    background: "linear-gradient(135deg, #ffffff 60%, rgba(219, 234, 254, 0.5) 100%)",
+    borderRadius: "16px",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+    padding: "24px",
+    fontFamily: "Albert Sans, sans-serif",
+    height: "200px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+  };
+
+  if (metricsData.isLoading) {
+    return (
+      <div style={{ width: "100%", fontFamily: "Albert Sans, sans-serif" }}>
+        <div style={cardStyles}>Loading...</div>
+      </div>
+    );
+  }
+
   return (
-    <Paper
-      sx={{
-        p: 3,
-        borderRadius: '16px',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        boxShadow: '0px 0.5px 9px 0px rgba(111, 111, 111, 0.3)',
-        fontFamily: 'Albert Sans, sans-serif',
-      }}
-    >
-      {/* Top Content */}
-      <Box>
-        <Typography
-          variant="h6"
-          color="#333333"
-          gutterBottom
-          sx={{ fontWeight: 400 }}
-        >
-          New Reports
-        </Typography>
-        <Typography variant="h5" color="#333333" sx={{ fontWeight: 400 }}>
-          <Typography
-            component="span"
-            variant="h4"
-            color="#333333"
-            sx={{ fontWeight: 400 }}
+    <div style={{ width: "100%", fontFamily: "Albert Sans, sans-serif" }}>
+      <div style={cardStyles}>
+        <div>
+          <h3
+            style={{
+              color: "#374151",
+              fontSize: "20px",
+              fontWeight: "400",
+              margin: "0 0 12px 0",
+            }}
           >
-            5
-          </Typography>{' '}
-          new pending reports
-        </Typography>
-      </Box>
+            New Reports
+          </h3>
 
-      {/* Bottom Button */}
-      <Button
-        variant="contained"
-        sx={{
-          mt: 3,
-          borderRadius: '24px',
-          textTransform: 'none',
-          fontWeight: 500,
-          width: '100%',
-          fontFamily: 'Albert Sans, sans-serif',
-          backgroundColor: '#1488DB',
-          '&:hover': { backgroundColor: '#1488DB' },
-        }}
-      >
-        Check Reports
-      </Button>
-    </Paper>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+              gap: "8px",
+              flexWrap: "wrap",
+            }}
+          >
+            <span
+              style={{
+                fontSize: "20px",
+                fontWeight: "400",
+                color: "#1f2937",
+                lineHeight: "1",
+              }}
+            >
+              {metricsData.count}
+            </span>
+            <span style={{ fontSize: "20px", color: "#6b7280", fontWeight: "400" }}>
+              {metricsData.description}
+            </span>
+          </div>
+        </div>
+
+        <button
+          style={{
+            width: "100%",
+            backgroundColor: "#3b82f6",
+            color: "white",
+            fontSize: "16px",
+            fontWeight: "500",
+            padding: "12px",
+            borderRadius: "9999px",
+            border: "none",
+            cursor: "pointer",
+            transition: "background-color 0.2s",
+          }}
+          onMouseOver={(e) => e.target.style.backgroundColor = "#2563eb"}
+          onMouseOut={(e) => e.target.style.backgroundColor = "#3b82f6"}
+        >
+          Check Reports
+        </button>
+      </div>
+    </div>
   );
 }
