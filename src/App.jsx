@@ -10,12 +10,13 @@ import { Container, Box } from "@mui/material";
 import theme from "./theme";
 import DashboardPage from "./pages/DashboardPage";
 import AppointmentsPage from "./pages/AppointmentsPage";
+import DoctorProfilePanel from "./components/dashboard/DoctorProfilePanel";
+import Header from "./components/layout/Header.jsx";
 
 import RecentPatients from "./components/dashboard/RecentPatients";
 import AllPatientsPage from "./components/dashboard/AllPatientsPage";
 import ProfileView from "./components/dashboard/ProfileView";
 import PatientDistributionCard from "./components/dashboard/PatientDistributionCard";
-
 import { recentPatientsData, allPatientsData } from "./data";
 
 // --- PatientsManager Component ---
@@ -96,11 +97,59 @@ function PatientsManager() {
 
 // --- Main App Component ---
 function App() {
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [currentView, setCurrentView] = useState("menu");
+  const [notification, setNotification] = useState("");
+
+  // --- Panel Controls ---
+  const handleClose = () => setIsPanelOpen(false);
+  const handleNavigate = (view) => setCurrentView(view);
+
+  const handleLogout = () => {
+    setIsPanelOpen(false);
+    setNotification("Doctor logged out successfully!");
+    setTimeout(() => setNotification(""), 3000);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
         <CssBaseline />
         <Router>
+          {/* Header always visible */}
+          <Header onProfileClick={() => setIsPanelOpen(true)} />
+
+          {/* Notification Toast */}
+          {notification && (
+            <div
+              style={{
+                position: "fixed",
+                top: "20px",
+                right: "20px",
+                padding: "16px 24px",
+                backgroundColor: "#10b981",
+                color: "#fff",
+                borderRadius: "6px",
+                zIndex: 2000,
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+                fontSize: "14px",
+                fontWeight: "500",
+              }}
+            >
+              {notification}
+            </div>
+          )}
+
+          {/* Doctor Profile Panel */}
+          {isPanelOpen && (
+            <DoctorProfilePanel
+              onClose={handleClose}
+              onNavigate={handleNavigate}
+              currentView={currentView}
+              onLogout={handleLogout}
+            />
+          )}
+
           <Routes>
             <Route path="/" element={<DashboardPage />} />
             <Route path="/appointments" element={<AppointmentsPage />} />
