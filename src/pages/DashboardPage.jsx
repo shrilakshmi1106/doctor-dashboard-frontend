@@ -8,7 +8,6 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import UpcomingAppointments from "../components/UpcomingAppointments";
 import ActivePatientsCard from "../components/dashboard/ActivePatientsCard";
 import StressCard from "../components/dashboard/StressCard";
@@ -17,12 +16,7 @@ import RecentPatientsCard from "../components/dashboard/RecentPatientsCard";
 import PatientDistributionCard from "../components/dashboard/PatientDistributionCard";
 import MessagesCard from "../components/dashboard/MessagesCard";
 
-export default function DashboardPage() {
-  const [userProfile] = useState({
-    name: "Dr. Rohit",
-    avatar: "https://i.pravatar.cc/40?img=12",
-  });
-
+export default function DashboardPage({ onProfileClick }) {
   const [showNotification, setShowNotification] = useState(false);
   const [currentNotification, setCurrentNotification] = useState(null);
 
@@ -64,52 +58,6 @@ export default function DashboardPage() {
         position: "relative",
       }}
     >
-      {/* ---------- TOP BAR ---------- */}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          px: 3,
-          py: 2.5,
-        }}
-      >
-        <Typography
-          sx={{
-            fontSize: "20px",
-            background: "linear-gradient(135deg, #a855f7, #3b82f6)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
-        >
-          PreSchedule
-        </Typography>
-
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <IconButton onClick={handleBellClick} sx={{ color: "#6b7280" }}>
-            <NotificationsNoneOutlinedIcon />
-          </IconButton>
-
-          <IconButton sx={{ color: "#6b7280" }}>
-            <SearchOutlinedIcon />
-          </IconButton>
-
-          <Box
-            component="img"
-            src={userProfile.avatar}
-            alt="profile"
-            sx={{
-              width: 40,
-              height: 40,
-              borderRadius: "50%",
-              border: "2px solid #e5e7eb",
-              objectFit: "cover",
-              cursor: "pointer",
-            }}
-          />
-        </Box>
-      </Box>
-
       {/* ---------- NOTIFICATION BANNER ---------- */}
       {showNotification && (
         <Box
@@ -160,6 +108,7 @@ export default function DashboardPage() {
           gap: 3,
           px: 3,
           pb: 5,
+          pt: 3,
           alignItems: "stretch",
           gridTemplateColumns: {
             xs: "1fr",

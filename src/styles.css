@@ -39,8 +39,8 @@ body, html, #root { height: 100%; margin: 0; background: var(--bg); color: #1118
   display: grid;
   grid-template-columns: 1.3fr 1fr 0.8fr 0.3fr; /* tighter spacing between columns */
   align-items: center;
-  padding: 8px 12px; /* reduce vertical and horizontal padding */
-  gap: 12px; /* reduce column gap */
+  padding: 30px 30px; /* reduce vertical and horizontal padding */
+  gap: 130px; /* reduce column gap */
 }
 
 .col-name { 
